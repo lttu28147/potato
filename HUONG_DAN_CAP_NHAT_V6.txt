@@ -1,0 +1,41 @@
+POTATO V6 - HƯỚNG DẪN CẬP NHẬT NHANH
+==================================
+
+1. GIỮ DỮ LIỆU VÀ API KEY
+- Nếu chạy local: copy file .env từ V5 sang V6.
+- Nếu cần lịch sử đã lưu: sao lưu và copy data/store.json từ V5 sang V6 (khi server đã dừng).
+- KHÔNG đẩy .env hoặc data/store.json lên GitHub!
+
+2. CHẠY TRÊN WINDOWS
+- Mở đúng thư mục POTATO_Web chứa server.js.
+- Nhấn vào thanh địa chỉ của File Explorer, gõ cmd, Enter.
+- Chạy: node server.js
+- Mở: http://localhost:3000
+- Nếu gặp EADDRINUSE: tắt server cũ bằng Ctrl+C hoặc sửa PORT trong .env.
+
+3. CẬP NHẬT WEBSITE RENDER
+- Trên repository GitHub đang liên kết Render, cập nhật toàn bộ source V6.
+- Phải có file public/js/file-reader.js, server.js, public/js/app.js, public/styles.css, lib/ai.js.
+- Không upload .env, data/store.json, các ảnh xem trước.
+- Render Web Service: Start Command = node server.js, Build = npm install.
+- Trong Render Environment: HOST=0.0.0.0, GEMINI_API_KEY=<YOUR_KEY>.
+- Nếu bật Auto Deploy, commit sẽ kích hoạt deploy mới.
+- Chờ Live, mở URL HTTPS và nhấn Ctrl+Shift+R để refresh giao diện.
+
+4. TEST TÍNH NĂNG LUYỆN THUYẾT TRÌNH
+- Chọn Luyện thuyết trình.
+- Tải lên một file TXT/MD/CSV/PDF/DOCX/PPTX tối đa 10 MB hoặc nhập dàn ý.
+- Bấm Bắt đầu thuyết trình; cấp quyền micro và trình bày.
+- Bấm Kết thúc thuyết trình; đợi góp ý AI.
+- Bấm Luyện lại lần 2 để mở bài nói mới, giữ tài liệu cũ.
+- Xem Lịch sử lượt luyện; lưu lượt quan trọng vào Nhật ký nếu muốn.
+- Có thể lặp lại thêm lượt 3, 4, 5,... không đặt giới hạn nhân tạo.
+
+5. GIỚI HẠN / QUYỀN RIÊNG TƯ
+- AI đánh giá trên BẢN CHÉP LỜI, chưa phân tích sóng âm/giọng điệu.
+- File được đọc trong trình duyệt; chỉ VĂN BẢN ĐÃ TRÍCH xuất được gửi đến AI khi người dùng yêu cầu góp ý.
+- PDF/DOCX/PPTX cần kết nối Internet để tải thư viện PDF.js/JSZip từ CDN lúc đọc.
+- PDF là ảnh quét sẽ không trích được chữ; xuất bản TXT có văn bản để dùng.
+- Với file dài, lấy tối đa 6.500 ký tự đầu; có thể chỉnh dàn ý trích xuất.
+- Các lượt chưa được lưu chỉ giữ trong bộ nhớ của trang hiện tại.
+- Gói Render Free có thể ngủ, và dữ liệu store.json không bền vững.

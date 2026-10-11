@@ -1,0 +1,44 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),assert=require('node:assert/strict');
+const root=path.join(__dirname,'..');
+const app={innerHTML:'',querySelectorAll:()=>[]};
+const document={querySelector:x=>x==='#app'?app:null,querySelectorAll:()=>[],getElementById:()=>null,addEventListener:()=>{},createElement:()=>({type:'',dataset:{},setAttribute(){},insertAdjacentElement(){}})};
+const context=vm.createContext({console,Date,Math,Intl,URL,AbortController,
+ window:{addEventListener(){},scrollTo(){}},document,localStorage:{getItem(){return null;},setItem(){},removeItem(){}},
+ location:{hash:'#/speech'},setTimeout(){},setInterval(){},Event:class Event{},navigator:{}});
+vm.runInContext('class RoomVoice {constructor(){} get status(){return {active:false,muted:false,connected:0,error:""}} stop(){}}',context);
+vm.runInContext(fs.readFileSync(path.join(root,'public/js/catalog.js'),'utf8').replace(/export const /g,'var '),context);
+vm.runInContext(fs.readFileSync(path.join(root,'public/js/app.js'),'utf8').replace(/^(import [^\n]+\n)+/,'').replace(/boot\(\);\s*$/,''),context);
+const run=code=>vm.runInContext(code,context);
+(async()=>{
+ run(`state.user={id:'tester',nickname:'Student',privacy:{saveHistory:true}};state.route='speech';
+ request=async (url,body)=>{globalThis._lastRequest={url,body};return {review:{mode:'guided',label:'Gợi ý theo quy tắc',overview:'Luyện tập có ích',strengths:['Có ý chính'],improvements:['Cần ví dụ'],nextTry:'Nói rõ hơn',question:'Ví dụ nào?'}};}`);
+ let html=run('speech()');
+ assert.match(html,/Tải tài liệu lên/);assert.match(html,/Bắt đầu thuyết trình/);
+ assert.match(html,/speech-file-input/);assert.match(html,/speech-reference/);
+ run("state.speech.reference='Mở đầu, ví dụ và kết luận về việc tự suy nghĩ trước AI.';");
+ run("state.speech.transcript='Xin chào, hôm nay tôi giới thiệu cách học chủ động. Thứ nhất chúng ta nên tự suy nghĩ vì đó là cách hiểu bài. Ví dụ tôi đã từng giải toán mà không hỏi AI, cuối cùng tôi ghi lại bài học.';");
+ await run('completeSpeech()');
+ assert.equal(run('state.speech.attempts.length'),1);
+ assert.equal(run('state.speech.reviewStatus'),'ready');
+ assert.match(run('speech()'),/Luyện lại lần 2/);
+ assert.equal(run('state.speech.attempts[0].review.overview'),'Luyện tập có ích');
+ await run("onAction('speech-retry',{dataset:{}})");
+ assert.equal(run('state.speech.transcript'),'');
+ assert.equal(run('state.speech.feedback'),null);
+ assert.match(run('speech()'),/Bắt đầu thuyết trình/);
+ run("state.speech.transcript='Xin chào các bạn, hôm nay tôi trình bày về thói quen suy nghĩ độc lập trong thời đại AI. Đầu tiên, mỗi người cần tự giải thích lý do, ví dụ bằng một bài toán của chính mình. Tiếp theo hãy trao đổi với bạn bè rồi kiểm chứng bằng AI. Cuối cùng, chúng ta sẽ tự rút ra bài học.';");
+ await run('completeSpeech()');
+ assert.equal(run('state.speech.attempts.length'),2);
+ assert.match(run('globalThis._lastRequest.body.lesson'),/BẢN CHÉP LƯỢT TRƯỚC/);
+ assert.match(run('speech()'),/Lượt 1/);assert.match(run('speech()'),/Lượt 2/);
+ await run("onAction('speech-retry',{dataset:{}})");
+ assert.equal(run('state.speech.attempts.length'),2);
+ assert.match(run('speech()'),/LƯỢT 3/);
+ const fileReader=fs.readFileSync(path.join(root,'public/js/file-reader.js'),'utf8').replace('export async function','async function');
+ const fileContext=vm.createContext({globalThis:{},document:{},Blob,File,DOMParser:undefined});
+ vm.runInContext(fileReader,fileContext);
+ const loaded=await vm.runInContext('extractPresentationFile',fileContext)(new File(['Mở đầu rồi nêu luận điểm, dẫn chứng và kết luận rõ ràng.'],'de-cuong.txt'));
+ assert.match(loaded.text,/dẫn chứng/);assert.equal(loaded.format,'TXT');
+ console.log('✓ POTATO V6: file input, title, repeatable speech attempts, independent AI reviews, previous-attempt context, TXT reading.');
+})().catch(err=>{console.error(err);process.exitCode=1;});

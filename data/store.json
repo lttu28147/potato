@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "users": {
+    "0580a78b-204e-40b3-a9ba-4ea8b5a11f85": {
+      "id": "0580a78b-204e-40b3-a9ba-4ea8b5a11f85",
+      "nickname": "Tú Uyên",
+      "values": [],
+      "createdAt": "2026-10-11T00:20:48.612Z",
+      "privacy": {
+        "saveHistory": true
+      }
+    }
+  },
+  "tokens": {
+    "bb8c36e993170d3b5515adff10423369c50c2aa94665854703abdbc55718baf7": "0580a78b-204e-40b3-a9ba-4ea8b5a11f85"
+  },
+  "entries": [],
+  "questLogs": [],
+  "focusLogs": [],
+  "rooms": {}
+}

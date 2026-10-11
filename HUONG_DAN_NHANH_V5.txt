@@ -1,0 +1,19 @@
+POTATO V5 - HUONG DAN NHANH
+===========================
+1. Mo thu muc POTATO_Web chua server.js.
+2. Click thanh dia chi -> go cmd -> Enter.
+3. Chay: node server.js
+4. Mo Chrome/Edge: http://localhost:3000
+5. Neu bao EADDRINUSE: Ctrl+C de dung server cu; chay lai.
+6. Neu muon Gemini: copy .env.example thanh .env, them GEMINI_API_KEY va khoi dong lai. KHONG upload file .env.
+
+TEST NHANH:
+- Noi & suy nghi: Boc chu de -> Bat dau -> Bo qua suy nghi -> 3,2,1 -> noi.
+- Debate: Tao phong Debate 3v3 -> Du doi 3v3 (1 nguoi + 5 bot) -> Bat dau -> gui quan diem -> Mo tranh luan -> chuyen luot.
+- Nghe bot: bam "Nghe bot" trong tin nhan cua bot, tuy ho tro trinh duyet.
+- Doi goc nhin: bam "Noi bang mic" o cac o nhap -> hoan tat -> nhan xet.
+- On lai/thu thach/tro choi: noi bang mic -> tong ket -> nhan phan hoi.
+
+RENDER: cap nhat TOAN BO du an (khong chi public); env HOST=0.0.0.0, GEMINI_API_KEY, GEMINI_MODEL. Khong upload .env, data/store.json.
+
+Luu y: Bot la mo phong VAN BAN. AI chi nhan xet VAN BAN chuyen tu giong noi; khong phan tich am thanh truc tiep. Chua co Gemini = phan hoi theo quy tac, duoc gan nhan ro.

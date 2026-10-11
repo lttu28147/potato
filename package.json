@@ -1,0 +1,23 @@
+{
+  "name": "potato-think-first",
+  "version": "1.3.0",
+  "private": true,
+  "description": "POTATO - Luyện nói, tư duy độc lập và nhận phản hồi cá nhân với AI",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=18.17"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "check": "node --check server.js && node --check lib/ai.js && node --check lib/store.js && node --input-type=module --check < public/js/app.js && node --input-type=module --check < public/js/catalog.js && node --input-type=module --check < public/js/room-voice.js && node --input-type=module --check < public/js/file-reader.js",
+    "test": "node tests/api-smoke.js",
+    "test:ai": "node tests/ai-review-mock.js",
+    "test:ui": "node tests/ui-templates-smoke.js",
+    "test:debate": "node tests/debate-smoke.js",
+    "test:timer": "node tests/timer-voice-smoke.js",
+    "test:voice": "node tests/room-voice-smoke.js",
+    "test:v5": "node tests/v5-features-smoke.js && node tests/v5-ui-smoke.js",
+    "test:v6": "node tests/v6-presentation-smoke.js"
+  }
+}
